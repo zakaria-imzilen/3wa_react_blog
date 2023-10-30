@@ -32,10 +32,6 @@ function HideOnScroll(props) {
 const Home = ({ currentUser, blogs, setBlogs }) => {
 	const navigate = useNavigate();
 
-	// currentUser.isConnected = null
-	// currentUser.isConnected = undefined
-	// currentUser.isConnected = ""
-
 	// GENDARMES -- PROTECTED 👮🏻‍♂️👮🏻‍♂️
 	// First TIME
 	useEffect(() => {
@@ -56,7 +52,9 @@ const Home = ({ currentUser, blogs, setBlogs }) => {
 			localStorage.setItem("blogs", JSON.stringify(blogs));
 	}, [blogs]);
 
-	return (
+	return currentUser.isConnected == false ? (
+		" "
+	) : (
 		<>
 			<CssBaseline />
 			<HideOnScroll>
@@ -70,7 +68,7 @@ const Home = ({ currentUser, blogs, setBlogs }) => {
 			</HideOnScroll>
 			<Toolbar />
 			<Container>
-				<NewBlogForm setBlogs={setBlogs} />
+				<NewBlogForm currentUser={currentUser} setBlogs={setBlogs} />
 
 				<Box sx={{ my: 2 }}>
 					{blogs.map((blog) => (

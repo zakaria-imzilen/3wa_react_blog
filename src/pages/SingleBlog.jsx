@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-const SingleBlog = ({ blogs }) => {
+const SingleBlog = ({ blogs, currentUser }) => {
 	const [currentBlog, setCurrentBlog] = useState(null);
 
 	const navigate = useNavigate();
@@ -10,13 +10,16 @@ const SingleBlog = ({ blogs }) => {
 	// 1- Capture the id passed in the URL params
 	const params = useParams();
 
+	useEffect(() => {
+		if (currentUser.isConnected === false) return navigate("/auth");
+	}, []);
+
 	// 2- Search for the blog article
 	useEffect(() => {
-		setTimeout(() => {
-			const findBlog = blogs.find((blog) => blog.id == params.id);
-			if (!findBlog) return navigate("/home");
-			setCurrentBlog(findBlog);
-		}, 3000);
+		const findBlog = blogs.find((blog) => blog.id == params.id);
+		if (!findBlog) return navigate("/home");
+		setCurrentBlog(findBlog);
+		// Enforces React to re-render the JSX
 	}, []);
 
 	return !currentBlog ? (
